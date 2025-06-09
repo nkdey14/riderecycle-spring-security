@@ -1,5 +1,6 @@
 package com.riderecycle.controller;
 
+import com.riderecycle.payload.LoginDto;
 import com.riderecycle.payload.UserDto;
 import com.riderecycle.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,17 @@ public class AuthController {
     }
 
     //http://localhost:8083/api/v1/auth/registerUser
+
+    // Postman JSON Body:
+    /*
+     {
+        "username": "akdey074",
+        "password": "test123",
+        "email": "akdey074@gmail.com",
+        "mobile": 9778042930
+    }
+
+    */
     @PostMapping("/registerUser")
     public ResponseEntity<?> registerUser(
         @RequestBody UserDto userDto
@@ -29,8 +41,34 @@ public class AuthController {
         return new ResponseEntity<>("User Created!", HttpStatus.CREATED);
     }
 
+    //http://localhost:8083/api/v1/auth/welcome
+
     @GetMapping("/welcome")
     public String welcome() {
         return "Welcome to RideRecycle Application";
+    }
+
+    // Verify Login Credentials
+    //http://localhost:8083/api/v1/auth/login
+
+    // Postman JSON Body:
+
+    /*
+
+    {
+    "username":"nkdey14",
+    "password":"testing"
+    }
+     */
+    @PostMapping("/login")
+    public ResponseEntity<String> verifyLogin(
+        @RequestBody LoginDto loginDto
+    ) {
+        boolean status = userService.verifyLoginCredentials(loginDto);
+        if(status){
+            return new ResponseEntity<>("Verified User!!", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Invalid Credentials!!", HttpStatus.UNAUTHORIZED);
+        }
     }
 }

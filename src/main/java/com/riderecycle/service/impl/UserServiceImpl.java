@@ -1,11 +1,13 @@
 package com.riderecycle.service.impl;
 
 import com.riderecycle.entity.User;
+import com.riderecycle.payload.LoginDto;
 import com.riderecycle.payload.UserDto;
 import com.riderecycle.repository.UserRepository;
 import com.riderecycle.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -51,5 +53,16 @@ public class UserServiceImpl implements UserService {
         User user = mapToUserEntity(userDto);
         User savedUser = userRepository.save(user);
         return mapToUserDto(savedUser);
+    }
+
+    @Override
+    public boolean verifyLoginCredentials(LoginDto loginDto) {
+        Optional<User> opUsername = userRepository.findByUsername(loginDto.getUsername());
+        if (opUsername.isPresent()) {
+            User user = opUsername.get();
+            boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), user.getPassword());
+            return checkpw;
+        }
+        return false;
     }
 }
