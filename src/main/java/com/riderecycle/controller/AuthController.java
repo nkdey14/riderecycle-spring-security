@@ -26,7 +26,7 @@ public class AuthController {
         String hashpw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(12));
         userDto.setPassword(hashpw);
         UserDto dto = userService.createUser(userDto);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        return new ResponseEntity<>("User Created!", HttpStatus.CREATED);
     }
 
     @GetMapping("/welcome")
