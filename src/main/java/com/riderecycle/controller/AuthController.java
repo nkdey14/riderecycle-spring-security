@@ -3,9 +3,11 @@ package com.riderecycle.controller;
 import com.riderecycle.payload.LoginDto;
 import com.riderecycle.payload.UserDto;
 import com.riderecycle.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,12 +33,14 @@ public class AuthController {
 
     */
     @PostMapping("/registerUser")
-    public ResponseEntity<?> registerUser(
-        @RequestBody UserDto userDto
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto, BindingResult result
     ){
         // hashing the password before saving it to the database
         String hashpw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(12));
         userDto.setPassword(hashpw);
+        if(result.hasErrors()) {
+            return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
+        }
         UserDto dto = userService.createUser(userDto);
         return new ResponseEntity<>("User Created!", HttpStatus.CREATED);
     }
@@ -61,7 +65,7 @@ public class AuthController {
     }
      */
     @PostMapping("/login")
-    public ResponseEntity<?> verifyLogin(
+    public ResponseEntity<String> verifyLogin(
         @RequestBody LoginDto loginDto
     ) {
         String jwtToken = userService.verifyLoginCredentials(loginDto);

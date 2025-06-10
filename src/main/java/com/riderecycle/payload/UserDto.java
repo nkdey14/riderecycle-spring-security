@@ -4,17 +4,29 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class UserDto {
 
     private Long id;
 
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     private String username;
 
+    @NotEmpty(message = "Password is required")
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
+    @Email(message = "Email should be valid")
+    @NotEmpty(message = "Email is required")
     private String email;
 
+    @NotEmpty(message = "Mobile number is required")
+    @Size(min= 10, max = 10, message = "Mobile number must be of 10 digits")
     private String mobile;
 
 //    public UserDto(Long id, String username, String password, String email, String mobile) {
