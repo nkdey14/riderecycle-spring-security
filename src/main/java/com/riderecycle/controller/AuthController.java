@@ -67,7 +67,8 @@ public class AuthController {
         String jwtToken = userService.verifyLoginCredentials(loginDto);
         if(jwtToken!=null){
             // Return token in JSON format
-            return ResponseEntity.ok(java.util.Collections.singletonMap("JWT token", jwtToken));
+           // return ResponseEntity.ok(java.util.Collections.singletonMap("JWT token", jwtToken));
+            return new ResponseEntity<>("JWT Token: "+jwtToken, HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Invalid Credentials!!", HttpStatus.UNAUTHORIZED);
         }
