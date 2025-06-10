@@ -61,12 +61,13 @@ public class AuthController {
     }
      */
     @PostMapping("/login")
-    public ResponseEntity<String> verifyLogin(
+    public ResponseEntity<?> verifyLogin(
         @RequestBody LoginDto loginDto
     ) {
-        boolean status = userService.verifyLoginCredentials(loginDto);
-        if(status){
-            return new ResponseEntity<>("Verified User!!", HttpStatus.OK);
+        String jwtToken = userService.verifyLoginCredentials(loginDto);
+        if(jwtToken!=null){
+            // Return token in JSON format
+            return ResponseEntity.ok(java.util.Collections.singletonMap("JWT token", jwtToken));
         }else{
             return new ResponseEntity<>("Invalid Credentials!!", HttpStatus.UNAUTHORIZED);
         }

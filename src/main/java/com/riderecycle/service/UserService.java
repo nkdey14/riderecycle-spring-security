@@ -6,5 +6,5 @@ import com.riderecycle.payload.UserDto;
 public interface UserService {
     UserDto createUser(UserDto userDto);
 
-    boolean verifyLoginCredentials(LoginDto loginDto);
+    String verifyLoginCredentials(LoginDto loginDto);
 }

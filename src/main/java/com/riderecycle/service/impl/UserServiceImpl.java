@@ -17,14 +17,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final JWTService jwtService;
 
     @Autowired
     private ModelMapper modelMapper;
 
-   User mapToUserEntity(UserDto userDto) {
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, JWTService jwtService) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+    }
+
+    User mapToUserEntity(UserDto userDto) {
         return modelMapper.map(userDto, User.class);
     }
 
@@ -56,13 +60,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyLoginCredentials(LoginDto loginDto) {
+    public String verifyLoginCredentials(LoginDto loginDto) {
         Optional<User> opUsername = userRepository.findByUsername(loginDto.getUsername());
         if (opUsername.isPresent()) {
             User user = opUsername.get();
             boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), user.getPassword());
-            return checkpw;
+            if(checkpw) {
+               return jwtService.generateToken(user.getUsername());
+            }
         }
-        return false;
+        return null;
     }
 }
