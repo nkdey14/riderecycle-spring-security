@@ -35,4 +35,13 @@ public class JWTService {
                 .sign(algorithm);
     }
 
+    public String getUsername(String token){
+        return JWT.require(algorithm)
+                .withIssuer(issuer)
+                .build()
+                .verify(token)
+                .getClaim("name")
+                .asString();
+    }
+
 }
