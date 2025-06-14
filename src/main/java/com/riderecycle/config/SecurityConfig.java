@@ -25,8 +25,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .addFilterBefore(jwtFilter, AuthorizationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/signUp").permitAll()
-                        .requestMatchers("/api/v1/auth/welcome").authenticated()
+                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/user/signUp").permitAll()
+                        .requestMatchers("/api/v1/auth/welcome").hasRole("" +
+                                "USER")
                         .anyRequest().authenticated());
 
         return http.build();

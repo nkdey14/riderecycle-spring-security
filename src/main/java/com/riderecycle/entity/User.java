@@ -22,6 +22,16 @@ public class User {
     @Column(nullable = false, unique = true)
     private String mobile;
 
+    @Column(nullable = false)
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 //    public User(Long id, String username, String password, String email, String mobile) {
 //        this.id = id;
 //        this.username = username;

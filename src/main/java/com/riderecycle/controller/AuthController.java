@@ -32,12 +32,13 @@ public class AuthController {
     }
 
     */
-    @PostMapping("/signUp")
+    @PostMapping("/user/signUp")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto, BindingResult result
     ){
         // hashing the password before saving it to the database
         String hashpw = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(12));
         userDto.setPassword(hashpw);
+        userDto.setRole("ROLE_USER");
         if(result.hasErrors()) {
             return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -29,14 +29,21 @@ public class UserDto {
     @Size(min= 10, max = 10, message = "Mobile number must be of 10 digits")
     private String mobile;
 
+    private String role;
+
 //    public UserDto(Long id, String username, String password, String email, String mobile) {
 //        this.id = id;
 //        this.username = username;
 //        this.password = password;
 //        this.email = email;
-//        this.mobile = mobile;
-//    }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public void setId(Long id) {
         this.id = id;
