@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     */
-    @PostMapping("/registerUser")
+    @PostMapping("/signUp")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto, BindingResult result
     ){
         // hashing the password before saving it to the database
