@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+
 import com.riderecycle.repository.UserRepository;
 
 @Configuration
@@ -26,8 +27,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, AuthorizationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/login", "/api/v1/auth/user/signUp").permitAll()
-                        .requestMatchers("/api/v1/auth/welcome").hasRole("" +
-                                "USER")
+                        .requestMatchers("/api/v1/auth/welcome").hasRole("USER")
                         .anyRequest().authenticated());
 
         return http.build();

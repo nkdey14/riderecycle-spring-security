@@ -66,9 +66,7 @@ public class AuthController {
     }
      */
     @PostMapping("/login")
-    public ResponseEntity<String> verifyLogin(
-        @RequestBody LoginDto loginDto
-    ) {
+    public ResponseEntity<String> verifyLogin(@RequestBody LoginDto loginDto) {
         String jwtToken = userService.verifyLoginCredentials(loginDto);
         if(jwtToken!=null){
             // Return token in JSON format
